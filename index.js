@@ -58,13 +58,25 @@ app.get('/status/rate_limit/', async function(req, res) {
     const response = await fetch(testapi);
     const data = await response.json();
     res.status(200);
-    res.send(String(data.rate.remaining));
+    if (data.rate.remaining > 0) {
+      res.send({
+      left: data.rate.remaining,
+      working: true,
+      message: ('Seems fine right now')
+      });
+    } else {
+      res.send({
+        working: false,
+        message: ('No fetches left, try waiting for an hour'),
+        limit: data.rate.limit
+      })
+    }
   } catch(error) {
     // 2. Skicka felmeddelandet som ett rent JSON-objekt
     res.status(500).json({ 
       working: false,
       error: error.message, // Detta ger en textsträng som t.ex. "fetch failed"
-      message: 'Somthing does not work'
+      message: 'Somthing does not work, please alert ecx678'
     });
   }
 });
