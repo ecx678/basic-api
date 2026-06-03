@@ -3,13 +3,14 @@ const express = require('express')
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
+const { error } = require("console");
 
 const app = express();
 const port = 8080;
 
 const lastResults = [];
 let lastFetch = 0;
-
+const testapi = ('https://api.github.com/rate_limit');
 const githubCommitApis = [
     "https://api.github.com/repos/Snail-IDE/snail-ide.github.io/commits?per_page=50",
     "https://api.github.com/repos/Snail-IDE/Snail-IDE-Vm/commits?per_page=50",
@@ -50,11 +51,24 @@ app.get('/', async function(req, res) {
   res.send("online")
 })
 
-app.get('/status', async function(req, res) {
-  res.status(200)
-  res.header("Content-Type", 'text/plain')
-  res.send("online")
-})
+// Funktionen måste vara "async" för att kunna använda "await"
+app.get('/status/rate_limit/', async function(req, res) {
+  try {
+    // 1. Du måste använda await här
+    const response = await fetch(testapi);
+    const data = await response.json();
+    res.status(200);
+    res.send(String(data.rate.remaining));
+  } catch(error) {
+    // 2. Skicka felmeddelandet som ett rent JSON-objekt
+    res.status(500).json({ 
+      working: false,
+      error: error.message, // Detta ger en textsträng som t.ex. "fetch failed"
+      message: 'Somthing does not work'
+    });
+  }
+});
+
 
 app.get('/commits', async function(req, res) {
   const difference = (Date.now() - lastFetch);
@@ -89,7 +103,7 @@ app.get('/commits', async function(req, res) {
     res.json(lastResults.sort(commitSort))
   } catch (error) {
     console.error("Error fetching commits:", error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ error: "Server Error, please log into a  diffrent API for this request" });
   }
 });
 
