@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
 const { error } = require("console");
-
+const { encrypt, decrypt } = require('./crypter.js')
 const app = express();
 const port = 8080;
 
