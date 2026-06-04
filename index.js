@@ -51,7 +51,7 @@ app.get('/', async function(req, res) {
   res.send("online")
 })
 
-// Funktionen måste vara "async" för att kunna använda "await"
+
 app.get('/status/', async function(req, res) {
   try {
     
@@ -75,7 +75,7 @@ app.get('/status/', async function(req, res) {
     
     res.status(500).json({ 
       working: false,
-      error: error.message, // Detta ger en textsträng som t.ex. "fetch failed"
+      error: error.message, 
       message: 'Somthing does not work, please alert ecx678'
     });
   }
