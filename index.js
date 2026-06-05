@@ -7,9 +7,10 @@ const { error } = require("console");
 const {} = require('./Utiles/crypter.js');
 const { url } = require("inspector");
 const app = express();
+require('dotenv').config()
 const port = process.env.PORT;
 app.set('trust proxy', true);
-require('dotenv').config()
+
 const lastResults = [];
 let lastFetch = 0;
 const testapi = ('https://api.github.com/rate_limit');
