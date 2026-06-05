@@ -51,7 +51,8 @@ app.use(bodyParser.json({ limit: "25mb" }));
 app.get('/', async function(req, res) {
   res.status(200)
   res.header("Content-Type", 'text/plain')
-  res.redirect('/status/rate_limit/')
+  res.redirect('/status/')
+  console.log('Redirectet', req.ip, 'to /status/')
 
 })
 
@@ -124,4 +125,6 @@ app.get('/commits', async function(req, res) {
   }
 });
 
-app.listen(port, () => console.log('Started server on port ' + port));
+app.listen(port, () => 
+  console.log('Started server on port ' + port)
+);
