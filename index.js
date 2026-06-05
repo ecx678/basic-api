@@ -88,42 +88,7 @@ app.get('/status/', async function(req, res) {
 });
 
 
-app.get('/commits', async function(req, res) {
-  const difference = (Date.now() - lastFetch);
-  if ((difference <= 120000) && (lastResults.length > 0)) {
-    res.status(200)
-    res.json(lastResults.sort(commitSort))
-    return
-  }
 
-  try {
-    const fetchPromises = githubCommitApis.map(api => fetch(api));
-    const responses = await Promise.all(fetchPromises);
-
-    lastResults.splice(0, lastResults.length);
-
-    for (let i = 0; i < responses.length; i++) {
-      const response = responses[i];
-      if (response.ok) {
-        const json = await response.json();
-        json.forEach(commit => {
-          lastResults.push(commit);
-        });
-      } else {
-        const text = await response.text();
-        console.log("error getting commits;", text);
-      }
-    }
-
-    console.log("got new commits")
-    lastFetch = Date.now()
-    res.status(200)
-    res.json(lastResults.sort(commitSort))
-  } catch (error) {
-    console.error("Error fetching commits:", error);
-    res.status(500).json({ error: "Server Error, please log into a  diffrent API for this request" });
-  }
-});
 
 app.listen(port, () => 
   console.log('Started server on port ' + port)
