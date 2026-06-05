@@ -60,7 +60,7 @@ app.get('/', async function(req, res) {
 app.get('/status/', async function(req, res) {
   console.log(req.ip, "logged in on /status")
   try {
-    // 1. Du måste använda await här
+    
     const response = await fetch(testapi);
     const data = await response.json();
     res.status(200);
@@ -78,10 +78,10 @@ app.get('/status/', async function(req, res) {
       })
     }
   } catch(error) {
-    // 2. Skicka felmeddelandet som ett rent JSON-objekt
+    
     res.status(500).json({ 
       working: false,
-      error: error.message, // Detta ger en textsträng som t.ex. "fetch failed"
+      error: error.message, 
       message: 'Somthing does not work, please alert ecx678'
     });
   }
