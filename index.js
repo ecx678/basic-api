@@ -11,7 +11,7 @@ const app = express();
 require('dotenv').config()
 const port = process.env.PORT;
 app.set('trust proxy', true);
-const { UserMatchesPassword } = require('./filefixer.js')
+const { UserMatchesPassword, GetUserByName } = require('./Utiles/filefixer.js')
 const lastResults = [];
 let lastFetch = 0;
 const testapi = ('https://api.github.com/rate_limit');
@@ -58,18 +58,20 @@ app.get('/', async function(req, res) {
 
 })
 app.post('/data', async function(req, res){
+  console.log(req.ip)
   const TOR = req.get('type')
   const user = {
     "username": req.body.username,
     "password": req.body.password
   };
+  console.log(user)
   if (TOR === ('remove_user')) {
     if (UserMatchesPassword(user)) {
+      console.log('seccues')
 
     }
   }
-  
-  
+
 })
 // Funktionen måste vara "async" för att kunna använda "await"
 app.get('/status/', async function(req, res) {

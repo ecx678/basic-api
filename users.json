@@ -1,1 +1,10 @@
-{}
+{
+  "kalle": {
+    "username": "kalle",
+    "password": "superhemligt123"
+  },
+  "sara": {
+    "username": "sara",
+    "password": "lösenord123"
+  }
+}

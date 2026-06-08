@@ -14,14 +14,14 @@ async function appendtofile(name, text) {
 }
 async function GetUserByName(name) {
     const filedataraw = await fs.readFile('/workspaces/basic-api/users.json')
-    const ParsedData = await JSON.parse(filedataraw);
+    const ParsedData = JSON.parse(filedataraw);
     const DataFound = ParsedData[name];
     return DataFound
 }
 async function UserMatchesPassword(user) {
     const password = user.password;
     const username = user.username;
-    if (GetUserByName(username).password === (password)) {
+    if (await GetUserByName(username).password === (password)) {
         return true;
     } else {
         return false;
@@ -29,9 +29,9 @@ async function UserMatchesPassword(user) {
 }
 
 
-module.exports(
+module.exports = {
     appendtofile,
     writetofile,
     UserMatchesPassword,
     GetUserByName
-)
+}
