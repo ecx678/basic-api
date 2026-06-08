@@ -6,11 +6,12 @@ const path = require('path');
 const { error } = require("console");
 const {} = require('./Utiles/crypter.js');
 const { url } = require("inspector");
+const { runInNewContext } = require("vm");
 const app = express();
 require('dotenv').config()
 const port = process.env.PORT;
 app.set('trust proxy', true);
-
+const { UserMatchesPassword } = require('./filefixer.js')
 const lastResults = [];
 let lastFetch = 0;
 const testapi = ('https://api.github.com/rate_limit');
@@ -47,6 +48,7 @@ app.use(bodyParser.urlencoded({
   extended: false
 }));
 app.use(bodyParser.json({ limit: "25mb" }));
+app.use(express.json());
 
 app.get('/', async function(req, res) {
   res.status(200)
@@ -55,7 +57,20 @@ app.get('/', async function(req, res) {
   console.log('Redirectet', req.ip, 'to /status/')
 
 })
-app.post('/data/')
+app.post('/data', async function(req, res){
+  const TOR = req.get('type')
+  const user = {
+    "username": req.body.username,
+    "password": req.body.password
+  };
+  if (TOR === ('remove_user')) {
+    if (UserMatchesPassword(user)) {
+
+    }
+  }
+  
+  
+})
 // Funktionen måste vara "async" för att kunna använda "await"
 app.get('/status/', async function(req, res) {
   console.log(req.ip, "logged in on /status")
