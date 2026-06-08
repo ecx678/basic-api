@@ -55,7 +55,7 @@ app.get('/', async function(req, res) {
   console.log('Redirectet', req.ip, 'to /status/')
 
 })
-
+app.post('/data/')
 // Funktionen måste vara "async" för att kunna använda "await"
 app.get('/status/', async function(req, res) {
   console.log(req.ip, "logged in on /status")
